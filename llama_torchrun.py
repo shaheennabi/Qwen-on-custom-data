@@ -350,11 +350,11 @@ class RotaryEmbeddings(nn.Module):
         # print(seq.shape)
         # print(self.embeddings_dims)
         # self.matrix = torch.zeros((seq_len, self.embeddings_dims, self.embeddings_dims), dtype=torch.float32,  requires_grad=False,  device = self.device)
-
+        token_idx = torch.arange(0 , seq_len, dtype=torch.float32,  device = self.device).unsqueeze(1)
         positions = torch.arange(0 , embeds_dims, 2, dtype=torch.float32,  device = self.device).unsqueeze(0)
         # dims = torch.arange(1, self.embeddings_dims // 2,  dtype=torch.float32)
         theta = 10000 ** (-2 * (positions) / embeds_dims)
-        angles = positions * theta
+        angles = token_idx * theta
         angles = angles.expand(seq_len, -1) # because this thing needs to be applied to every sequence in the batch but with embeds dims halved
         x_reshaped = seq.view(batch_size, seq_len, embeds_dims // 2, 2)
         
@@ -384,8 +384,7 @@ class RotaryEmbeddings(nn.Module):
         # if(ModelArgs.inference):
         res = self.apply_rope(x)
         return res 
-        # else:
-            # return self.x_reshaped
+
     
 class RotaryAttentionHead(nn.Module):
     def __init__(
@@ -1211,7 +1210,7 @@ def train():
             # print(f"[GPU {device}] | Epoch {epoch}/{ModelArgs.epochs}| |Step: {step} | Train Loss: {losses['train']:.4f}")
                 # print(f"step {step}: train loss {losses['train']:.4f}, val loss {losses['val']:.4f}")
                 # Log training loss more frequently
-                # Aggregate average loss across all GPUs
+                # Aggregate average loss across all G   PUs
             # avg_train_loss = torch.Tensor([losses['train']]).to(device)
             avg_val_loss = torch.Tensor([losses['val']]).to(device)
             # torch.distributed.reduce(avg_train_loss, dst=0, op=torch.distributed.ReduceOp.SUM)
