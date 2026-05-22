@@ -1,6 +1,6 @@
 
-# Introducing SmolLlama - A Smaller Language Model 
-
+# Introducing SmolLlama - A Smaller Language Model  ( will be custom training on qwen architecture--
+in the similar fashion)
 - So, I trained a Llama a 130M architecture I coded from ground up to build a small instruct model, going through the below-mentioned stages from scratch.
 - Trained on FineWeb dataset form HuggingFace consisting of 15 M texts (10BT snapshot) for a total of full 3 epochs
 
@@ -24,7 +24,7 @@ The three main stages are:
   2) Val dataset - 3M texts
 
 
-
+)
  ### 2) SFT
 
 #### Dataset
